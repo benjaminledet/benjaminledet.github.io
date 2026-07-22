@@ -4,15 +4,555 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Benjamin Ledet</title>
+<title>Benjamin Ledet · The Numbers</title>
+<meta name="description" content="A native-to-Flutter migration and a year of AI-assisted delivery on a production app, measured. Every figure comes with its method and its limits.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Two apps became one. Then I measured what AI changed.">
+<meta property="og:description" content="A native-to-Flutter migration and a year of AI-assisted delivery on a production app, measured. Every figure comes with its method and its limits.">
+<meta property="og:url" content="https://benjaminledet.github.io/">
+<meta name="twitter:card" content="summary">
 <style>
-  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-         background: #f9f9f7; color: #0b0b0b; }
-  @media (prefers-color-scheme: dark) { body { background: #121210; color: #eceae4; } }
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#6d6b64;
+  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --blue:#1f6cc9; --aqua:#0f9c6b; --good:#006300; --wash:rgba(31,108,201,.055);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+    --blue:#3987e5; --aqua:#199e70; --good:#0ca30c; --wash:rgba(57,135,229,.09);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+  --blue:#3987e5; --aqua:#199e70; --good:#0ca30c; --wash:rgba(57,135,229,.09);
+}
+:root[data-theme="light"]{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#6d6b64;
+  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --blue:#1f6cc9; --aqua:#0f9c6b; --good:#006300; --wash:rgba(31,108,201,.055);
+}
+html{background:var(--page)}
+body{
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink); background:var(--page); margin:0; padding:0 20px;
+}
+.wrap{max-width:800px;margin:0 auto;padding:56px 0 72px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 10px}
+h1{font-size:clamp(34px,6vw,52px);line-height:1.06;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;font-weight:800}
+h2,h3{font-size:clamp(21px,3.4vw,27px);line-height:1.15;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance;font-weight:750}
+.chapter h2{font-size:clamp(25px,4.4vw,34px)}
+.lede{color:var(--ink-2);font-size:17.5px;max-width:56ch;margin:0}
+.lede+.lede{margin-top:13px}
+.lede a{color:var(--blue)}
+section{margin-top:64px}
+.chapter+section{margin-top:44px}
+.chapter{margin-top:88px;padding-top:34px;border-top:2px solid var(--ink)}
+.chapter .eyebrow{color:var(--blue)}
+
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:34px}
+.tiles.tiles--single{grid-template-columns:minmax(0,390px)}
+@media(max-width:640px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .tblwrap>table{min-width:560px}
+  th,td{padding:8px}
+}
+.tile{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:18px 16px 15px}
+.tile .n{font-size:clamp(23px,4.2vw,31px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.tile .l{font-size:13.5px;color:var(--ink-2);margin-top:6px;line-height:1.4}
+.tile .s{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.35}
+.num{font-variant-numeric:tabular-nums}
+
+.hero-claim{margin:44px 0 0;padding:26px 24px;background:var(--surface);border:1px solid var(--ring);border-radius:12px}
+.hero-claim .big{font-size:clamp(23px,4.4vw,34px);font-weight:800;letter-spacing:-.02em;line-height:1.18}
+.hero-claim .big em{font-style:normal;color:var(--blue)}
+.hero-claim .sub{color:var(--ink-2);font-size:14.5px;margin-top:8px}
+
+.legend{display:flex;gap:18px;margin:2px 8px 10px;font-size:13px;color:var(--ink-2);flex-wrap:wrap}
+.legend .k{display:inline-block;width:18px;height:10px;border-radius:2px;vertical-align:middle;margin-right:7px}
+.legend .kl{height:3px}
+figure{margin:18px 0 0;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:14px 10px 8px;position:relative}
+figcaption{font-size:12px;color:var(--muted);padding:6px 8px 8px}
+svg{display:block;width:100%;height:auto}
+.gl{stroke:var(--grid);stroke-width:1}
+.ax{stroke:var(--axis);stroke-width:1.25}
+.ylab,.xlab{font:11.5px system-ui,-apple-system,sans-serif;fill:var(--muted);font-variant-numeric:tabular-nums}
+.era{fill:var(--wash)}
+.div{stroke:var(--blue);stroke-width:1.25;stroke-dasharray:3 4}
+.divlab{font:600 11.5px system-ui,-apple-system,sans-serif;fill:var(--blue)}
+.barlab{font:700 12px system-ui,-apple-system,sans-serif;fill:var(--ink);font-variant-numeric:tabular-nums}
+.bar-a{fill:var(--blue)}
+.bar-b{fill:var(--aqua)}
+.app-line{stroke:var(--blue);stroke-width:2.25;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.test-line{stroke:var(--aqua);stroke-width:2.25;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.pre{stroke-dasharray:5 6;stroke-width:1.75;opacity:.75}
+.pt{fill:var(--page);stroke-width:2}
+.endlab{font:700 12.5px system-ui,-apple-system,sans-serif;font-variant-numeric:tabular-nums}
+.tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--ring);border-radius:8px;
+   padding:8px 11px;font-size:12.5px;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.14);display:none;z-index:2;min-width:150px}
+.tt b{font-variant-numeric:tabular-nums}
+.tt .d{color:var(--muted);font-size:11.5px}
+.xh{stroke:var(--axis);stroke-width:1;stroke-dasharray:2 3;display:none}
+
+table{border-collapse:collapse;width:100%;margin-top:18px;font-size:14.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.v{font-variant-numeric:tabular-nums}
+td strong{font-weight:700}
+.mult{color:var(--good);font-weight:700}
+
+details{margin-top:12px;font-size:13.5px;color:var(--ink-2)}
+summary{cursor:pointer;color:var(--muted);font-size:13px}
+summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+details table{font-size:13px}
+.tblwrap{overflow-x:auto}
+.note{font-size:14.5px;color:var(--ink-2);margin-top:14px;max-width:64ch}
+.note a{color:var(--blue)}
+
+.layers{margin-top:26px;border-top:1px solid var(--grid)}
+.layer{display:grid;grid-template-columns:112px 1fr;gap:18px;padding:16px 2px;border-bottom:1px solid var(--grid);align-items:start}
+.layer .ln{display:flex;flex-direction:column;align-items:flex-start}
+.layer .ln .n{font-size:clamp(24px,3.8vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.layer .ln .u{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:2px}
+.layer .lt{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.layer .lt strong{color:var(--ink);font-weight:700}
+@media(max-width:560px){.layer{grid-template-columns:88px 1fr;gap:12px}}
+
+.foot{margin-top:70px;padding-top:18px;border-top:1px solid var(--grid);font-size:12.5px;color:var(--muted);line-height:1.6}
+.foot a{color:var(--blue)}
+
+@media print{
+  body{padding:0}
+  .tile,figure,.hero-claim,.layer,tr{break-inside:avoid}
+  .tt,.xh{display:none!important}
+}
 </style>
 </head>
 <body>
-<h1>Hello world</h1>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Benjamin Ledet · Freelance mobile architect · Flutter, Android, iOS</p>
+  <h1>Two apps became one.<br>Then I measured what AI changed.</h1>
+  <p class="lede">I lead mobile engineering at Yescapa, Europe’s leading campervan and motorhome rental marketplace, whose apps serve 50K+ monthly active users. That chapter closes at the end of August 2026, when I go independent.</p>
+  <p class="lede">This page is the measured record of the two pieces of work I’m most proud of. The first is the migration that replaced Yescapa’s two native apps with a single Flutter codebase I designed, and four apps ship from it today, across both of the group’s brands. The second is the delivery system I built around Claude, which multiplied my own measured throughput by 4.4.</p>
+  <p class="lede">Every figure comes from release tags, codebase snapshots and Sentry, and the <a href="#method">method</a> is at the bottom of the page.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="n num">2 → 1</div><div class="l">native apps replaced by one Flutter codebase</div><div class="s">designed in-house, migrated screen by screen · live on both stores since June 2026</div></div>
+    <div class="tile"><div class="n num">÷3–4</div><div class="l">engineering cost per feature</div><div class="s">everything used to be built twice, and everything around a feature was doubled too</div></div>
+    <div class="tile"><div class="n num">½</div><div class="l">of the 2022 team ships all the apps today</div><div class="s">the native developers moved to Flutter, and the departures were never backfilled</div></div>
+    <div class="tile"><div class="n num">&gt;99.9%</div><div class="l">crash-free sessions in production</div><div class="s">and more than 99% of users · Sentry, across both stores</div></div>
+    <div class="tile"><div class="n num">×4.4</div><div class="l">my throughput with AI, measured</div><div class="s">against my own pre-AI pace, on my own commits only, sustained over 12 months</div></div>
+    <div class="tile"><div class="n num">12 months</div><div class="l">to ship what would have taken me 4.5 years before AI</div><div class="s">app code only, converted at my own measured pre-AI pace · tests and tooling not counted</div></div>
+  </div>
+
+  <div class="hero-claim">
+    <div class="big">No feature planned on the roadmap was set aside during the migration. And the AI year shipped <em>4.5 years</em> of my solo output in <em>12 months</em>.</div>
+    <div class="sub">The rest of this page tells the two stories in order, one chapter each: first what building everything twice cost and how we removed it, then the system I built around Claude and what it measurably changed. The two results are counted separately and never multiplied together. And lines of code measure volume, not value; what bounds the ×4.4 is what each era actually shipped.</div>
+  </div>
+</header>
+
+<div class="chapter" id="chapter-1">
+  <p class="eyebrow">Chapter 1 · 2023 → June 2026</p>
+  <h2>The migration: two apps, one codebase</h2>
+  <p class="lede">In 2022, Yescapa ran two separate native apps, with every feature implemented twice and the iOS build taking two to three times the effort of the Android one. In 2023 I designed the way out. We would embed Flutter inside both native apps and migrate screen by screen, so the product roadmap never had to stop.</p>
+  <p class="lede">The Flutter architecture came from the Android rebuild I had led in 2020–2022 and from everything that running it in production had taught me; Android and Flutter remain very different, so it is the lessons that carried over, not the code.</p>
+  <p class="lede">Three calendar years separate that decision from the final release, and they overstate the effort. The early stretch was experimental, and I took the time to learn the framework properly. The dates say more about our constraints than about the size of the task.</p>
+</div>
+
+<section>
+  <p class="eyebrow">The problem</p>
+  <h3>Every feature was built twice</h3>
+  <p class="lede">Two codebases meant two implementations and two QA passes for the same product, and the cost is visible in the release history.</p>
+
+  <figure id="figGap">
+    <div class="legend">
+      <span><span class="k" style="background:var(--blue)"></span>Android app</span>
+      <span><span class="k" style="background:var(--aqua)"></span>iOS app</span>
+    </div>
+    <div id="chartGap"></div>
+    <div class="tt" id="ttGap" aria-hidden="true"></div>
+    <figcaption>Versions released per calendar year (2021–2025 shown; the full 2017–2026 series is in the table below), from the version tags of the two native repositories. In June 2026 both native apps shipped their final versions and froze; the first standalone Flutter release followed on June 23.</figcaption>
+  </figure>
+
+  <p class="note">Same product, same features to ship, and from 2020 to 2022 iOS released <strong>a third to a half</strong> as often as Android. That gap was the duplication tax users felt. Features were live on Android but still queued for iOS, while designs and wording drifted apart.</p>
+
+  <p class="note">Technical debt aged at different speeds too. The iOS app had fallen behind, and with two codebases and everything built twice, that divergence was mechanical. Removing it for good was one of the main reasons we migrated, alongside the cost.</p>
+
+  <p class="note">The chart also shows the migration working. From 2024, as Flutter gradually took over screens inside both apps, iOS release frequency went from 3.3 versions a month averaged over 2022–2023 to 6.5 over 2024–2025, because shipping iOS no longer meant rebuilding features in a second codebase.</p>
+
+  <p class="note">A good share of those releases were fixes. I had taken over the iOS side to bring the app back up to standard, and we caught up on years of accumulated iOS bugs, plus the new ones created by the native-Flutter coexistence, which was complex to manage. Android slowed over the same window for a simpler reason. There were fewer bugs left to fix, so fewer fix releases to ship.</p>
+
+  <p class="note">Since the June 2026 freeze, one implementation and one QA pass cover every platform and every brand at once.</p>
+
+  <p class="note">Call the Android build of a feature one unit of work. Everything iOS added on top came to two or three more for us at the time, counting the second implementation, its QA round and the coordination between the two, so a simple feature came to <strong class="num">3–4 units</strong>. The same feature, built once on a shared codebase, costs <strong class="num">1</strong>.</p>
+
+  <details>
+    <summary>Data table · versions per year, 2017 → 2026</summary>
+    <div class="tblwrap">
+    <table>
+      <thead><tr><th scope="col">Year</th><th scope="col">Android versions</th><th scope="col">iOS versions</th></tr></thead>
+      <tr><td class="v">2017</td><td class="v">9</td><td class="v">5</td></tr>
+      <tr><td class="v">2018</td><td class="v">21</td><td class="v">11</td></tr>
+      <tr><td class="v">2019</td><td class="v">16</td><td class="v">13</td></tr>
+      <tr><td class="v">2020</td><td class="v">24</td><td class="v">10</td></tr>
+      <tr><td class="v">2021</td><td class="v">61</td><td class="v">19</td></tr>
+      <tr><td class="v">2022</td><td class="v">70</td><td class="v">23</td></tr>
+      <tr><td class="v">2023</td><td class="v">100</td><td class="v">57</td></tr>
+      <tr><td class="v">2024</td><td class="v">71</td><td class="v">66</td></tr>
+      <tr><td class="v">2025</td><td class="v">35</td><td class="v">90</td></tr>
+      <tr><td class="v">2026 (until the freeze, Jun 9–11)</td><td class="v">30</td><td class="v">39</td></tr>
+    </table>
+    </div>
+  </details>
+</section>
+
+<section>
+  <p class="eyebrow">The outcome</p>
+  <h3>What the migration delivered, and what it cost</h3>
+  <p class="lede">The migration had no budget of its own. The team in place delivered it in parallel with the full product roadmap, and the further it went, the cheaper it got, because each migrated screen meant new features were built once, in Flutter, freeing up time for the next step.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="n num">€0</div><div class="l">extra spent on the migration</div><div class="s">no hires, no outside help · delivered end to end by the team in place</div></div>
+    <div class="tile"><div class="n num">0</div><div class="l">planned features set aside</div><div class="s">the roadmap shipped in full throughout, in parallel with the migration</div></div>
+    <div class="tile"><div class="n num">+1 brand</div><div class="l">delivered from the same codebase, at near-zero extra cost</div><div class="s">Goboony now ships full Flutter apps on both stores, from the same code</div></div>
+  </div>
+
+  <p class="note">The real cost was elsewhere, and I’d rather say it plainly. The hybrid phase, with Flutter screens running inside the two native apps and depending on them for everything shared, was the most complex part of the project to manage, and the app lost some quality during that period. Migrating without stopping the roadmap is possible; it is not free.</p>
+
+  <p class="note">The context helped too. In those years the mobile roadmap’s pace was set by other teams, which left us the slack to absorb the migration in parallel, and not every company has that slack.</p>
+
+  <p class="note">The structural gain is permanent, because one codebase has nothing left to diverge from. The app is now the same on iOS and Android, same features and same screens, and more than 99.9% of its production sessions are crash-free.</p>
+
+  <p class="note">The second brand came along almost for free. Every feature built for Yescapa lands in Goboony’s apps at the same time, on both stores, and no mobile team was hired for it.</p>
+</section>
+
+<section>
+  <p class="eyebrow">The team</p>
+  <h3>Half the team, four apps</h3>
+  <p class="lede">The half-team figure needs a bit of context.</p>
+
+  <p class="note">In 2022 every mobile feature was built twice, once for iOS and once for Android. Half of that team ships all four apps today. The developers who left did so by choice, and their positions were never backfilled, because one codebase serving every platform and both brands no longer needs the work done twice.</p>
+
+  <p class="note">The developers who carried the migration all chose to become Flutter mobile developers, and made it official. Each of us already had some Flutter experience, which helped us make that choice, and we kept learning together, on the job, while shipping the roadmap.</p>
+
+  <p class="note">I led that team through the whole migration, as their tech lead and manager. Migrating screen by screen was also how the developers trained on the architecture, and the ones who are staying now run it entirely on their own.</p>
+
+  <p class="note">They work in the architecture I designed, on a codebase that carries none of the debt the two native apps had accumulated. The time that used to go into maintenance now goes into new features.</p>
+</section>
+
+<section>
+  <p class="eyebrow">The bet</p>
+  <h3>Why Flutter</h3>
+  <p class="lede">Betting two production apps on a cross-platform framework is the kind of decision that can age badly, so it deserves its own scrutiny.</p>
+
+  <p class="note">Cost was only part of what we were after. Two codebases meant features drifting apart, designs and wording diverging, two teams to keep synchronized, and years of technical debt on each side. Whatever we picked had to unify the teams and the features. The deployments too.</p>
+
+  <p class="note">Flutter was a fit for us. It shares the whole app between platforms, UI included, so one implementation renders identically on iOS and Android, and divergence ends there.</p>
+
+  <p class="note">Our app was a good candidate too, mostly data display and forms over an API. Heavier platform-specific needs would not have ruled Flutter out, since any native feature stays reachable through platform channels and native plugins, but having little of that kept our migration simple. Nothing in our toolchain had to be given up, since crash reporting, analytics, translations and automated releases all had first-class Flutter support.</p>
+
+  <p class="note">The fair question in 2023 was whether Flutter would be another Cordova, one more hybrid wave that gets abandoned.</p>
+
+  <p class="note">What convinced me at the time was that Google was converting its own apps to it, and reported 70% less engineering effort on Google Pay after the move. Big apps had already made the exact move we were planning. BMW rebuilt its diverging native apps as the single Flutter codebase behind My BMW; Nubank, the largest independent digital bank outside Asia, was migrating its app piece by piece; and SNCF Connect had replaced the separate native versions of France’s main rail app the year before. eBay, Toyota and Crédit Agricole had shipped on it too, and its popularity had grown every year in developer surveys.</p>
+
+  <p class="note">Three years later the bet has aged well. Google announced at the end of 2024 that Flutter had passed one million monthly active developers, and that nearly 30% of all new iOS apps were built with it. Jetpack Compose and SwiftUI, the declarative frameworks the native platforms adopted themselves, are built on the same model, born on the web with React; Flutter bet on it from the start, and the native world moved the same way.</p>
+
+  <p class="note">And the proof I can offer first-hand is on this page. Our app is in production on both stores, and it came out better than the native apps it replaced. We put everything we had learned on the native versions into it, and we used the migration to redesign the whole app for consistency.</p>
+
+  <p class="note">None of that makes Flutter a universal answer. A mature native team with no duplication problem has little to gain from migrating. It was the right answer to our structure, where everything was built twice for a product that needed to be one app again.</p>
+</section>
+
+<div class="chapter" id="chapter-2">
+  <p class="eyebrow">Chapter 2 · July 2025 → July 2026</p>
+  <h2>The AI year: my own throughput, ×4.4</h2>
+  <p class="lede">With the platform converging, my own pace was the next thing to work on. I built a delivery system around Claude, inside the Flutter architecture I had designed: skills that describe how this codebase is built, commands for the recurring work, triggers and rules that enforce our standards, and automated releases, all versioned and reviewed like the rest of the code.</p>
+  <p class="lede">Then I measured what it changed against the only honest baseline I have, my own pre-AI pace, in the same codebase, counted by the same script.</p>
+</div>
+
+<section>
+  <p class="eyebrow">The codebase</p>
+  <h3>Two eras, one codebase</h3>
+  <p class="lede">23 months of my solo work built the first 50,759 lines. The next 117,914 took 12.2 months.</p>
+
+  <figure id="fig">
+    <div class="legend">
+      <span><span class="k kl" style="background:var(--blue)"></span>App code (lib/)</span>
+      <span><span class="k kl" style="background:var(--aqua)"></span>Test code (test/)</span>
+      <span style="color:var(--muted)">dashed = pre-AI test average · the app line is measured monthly across both eras</span>
+    </div>
+    <div id="chart"></div>
+    <div class="tt" id="tt" aria-hidden="true"></div>
+    <figcaption>Lines of code (Dart), generated files excluded · monthly snapshots from Aug 2023 to Jul 7, 2026, the same counting script for every point; the pre-AI test series is drawn as a dashed average · the pre-AI curve moves in steps where long-lived branches landed at once</figcaption>
+  </figure>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr><td></td><th scope="col">Before Claude<br>Aug 2023 → Jul 2025</th><th scope="col">With Claude<br>Jul 2025 → Jul 2026</th></tr></thead>
+    <tr><td>App code</td><td class="v">50,759 lines in 23 months</td><td class="v"><strong>+117,914 lines</strong> in 12.2 months</td></tr>
+    <tr><td>Pace</td><td class="v">2,207 lines / month</td><td class="v"><strong>9,665 lines / month</strong> <span class="mult">×4.4</span></td></tr>
+    <tr><td>Shipped</td><td class="v">Flutter screens embedded inside the two native apps</td><td class="v">one standalone app on both stores, plus the Goboony brand from the same code</td></tr>
+  </table>
+  </div>
+
+  <details>
+    <summary>Data table · the 14 snapshots</summary>
+    <div class="tblwrap"><table id="dtable"></table></div>
+  </details>
+
+  <p class="note">These are my commits only, filtered by author in the repository’s history, so the other developers’ work is not in these numbers. And the ×4.4 compares the average pace of each era, 23 months before Claude against 12 months with it, not one month against another.</p>
+
+  <p class="note">The test curve starts near zero because before AI I chose not to invest in automated tests. A company that wants to innovate fast doesn’t have time to linger on tests, and if you are rigorous enough to QA every case by hand, which takes a developer who knows their code well, tests become even more optional. Automated tests work best for developers who never try their code the way a user would. We shipped the occasional regression without them, but in my experience that cost us far less in production than the hours and hours of test-writing would have, and the app’s quality held.</p>
+
+  <p class="note">Since January 2026 Claude writes tests alongside each feature, which is the 60K-line jump on the test curve. They cost me almost no time, so there was no reason not to. Months in, none of them has caught a regression yet; the bugs we did have got past them, because a test only checks what someone thought to check, and some bugs will always slip through. They remain an extra safety net that leaves the app stronger, at almost no cost, so I keep them. But I still believe efficient QA and real user testing beat unit tests. No other number on this page counts them.</p>
+
+</section>
+
+<section>
+  <p class="eyebrow">The system</p>
+  <h3>The config that keeps quality high</h3>
+  <p class="lede">An AI without context writes plausible, generic code. Mine works inside an architecture I designed, through configuration written specifically for it, so every line the AI writes has a defined place in the system. That is what keeps the output at production quality.</p>
+
+  <div class="layers">
+    <div class="layer">
+      <div class="ln"><span class="n num">13</span><span class="u">skills</span></div>
+      <div class="lt"><strong>It knows how this codebase works.</strong> The rules of the codebase, written down and loaded before the AI touches code: screen architecture, test-writing specs, the design-system catalog, native-code migration, crash triage.</div>
+    </div>
+    <div class="layer">
+      <div class="ln"><span class="n num">12</span><span class="u">commands</span></div>
+      <div class="lt"><strong>Recurring work is one command.</strong> Prepare a change for review, generate tests, update the database schema, sync user journeys to Figma. Codified once, repeated identically.</div>
+    </div>
+    <div class="layer">
+      <div class="ln"><span class="n num">6</span><span class="u">triggers &amp; rules</span></div>
+      <div class="lt"><strong>Guardrails are enforced automatically.</strong> Triggers load the right skill on every request; hard rules ban the failure modes (off-brand UI components, unverified claims, &ldquo;done&rdquo; without checks).</div>
+    </div>
+    <div class="layer">
+      <div class="ln"><span class="n num">5</span><span class="u">integrations</span></div>
+      <div class="lt"><strong>It sees beyond the code.</strong> Production crashes (Sentry), the app running on a device, the Figma designs, the Notion specs. The AI reads and drives them directly.</div>
+    </div>
+    <div class="layer">
+      <div class="ln"><span class="n num">21</span><span class="u">scripts</span></div>
+      <div class="lt"><strong>Shipping is automated.</strong> Store releases, version checks, release notes, credentials. The path from merged code to the stores runs itself.</div>
+    </div>
+  </div>
+
+  <p class="note">The whole configuration evolved through <strong class="num">96 commits</strong> over the year, written with Claude and reviewed like any other code. Every lesson learned becomes a written rule, so the system doesn’t make the same mistake twice. And it stays with the codebase, since new AI capability lands in the repository as configuration rather than tribal knowledge.</p>
+
+  <p class="note">The developers who are staying built it with me through the year and are fully trained on it. How to use each part of it, and in which cases, is documented in Notion. None of it leaves with me.</p>
+</section>
+
+<section>
+  <p class="eyebrow">The bill</p>
+  <h3>What it cost, what it’s worth</h3>
+  <p class="lede">The two chapters share one bill. The migration itself cost nothing beyond the team in place, no hires and no outside help, which is the €0 of chapter 1. The only new money in the whole story is the AI subscription.</p>
+
+  <div class="tiles tiles--single">
+    <div class="tile"><div class="n num">≈ €1.5K</div><div class="l">AI subscription, July 2025 → August 2026</div><div class="s">one Claude plan: $20/mo → $100/mo (Sep 2025) → $200/mo (Jun → Aug 2026)</div></div>
+  </div>
+
+  <p class="note">I started on the $20 Pro plan, kept finding new uses, and ended the year a power user on the Max plan.</p>
+
+  <p class="note">In return, the year’s app code equals 53.4 months of my pre-AI solo work, against twelve months of subscription. That’s the ×4.4 expressed in time.</p>
+</section>
+
+<section id="method">
+  <p class="eyebrow">Method</p>
+  <h3>How the numbers were measured</h3>
+  <p class="lede">Each figure below comes with its source and the rule that keeps it from overcounting. What I couldn’t measure, I excluded rather than estimated. When in doubt, I made the numbers smaller, not bigger.</p>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr><th scope="col">Figure</th><th scope="col">Status</th><th scope="col">Source &amp; guard</th></tr></thead>
+    <tr><td><strong>Release history</strong></td><td>Measured</td><td>770 version tags across the two native repositories (2017 → June 2026), read from the repository API and cross-checked against Sentry release records. One version tag = one released version, the same rule for every era.</td></tr>
+    <tr><td><strong>Crash-free rate</strong></td><td>Measured</td><td>Sentry, production data across both stores: above 99.9% of sessions and above 99% of users are crash-free. The two definitions differ (one crashing session marks its whole user as crashed), so both are given.</td></tr>
+    <tr><td><strong>Active users</strong></td><td>Measured</td><td>The 50K+ monthly active users in the header come from the stores’ own consoles, Google Play and App Store.</td></tr>
+    <tr><td><strong>Lines of code &amp; tests</strong></td><td>Measured</td><td>37 monthly snapshots of the codebase, 14 of them in the AI year: app and test source only, generated files excluded, one script for all points. Counts code that exists, not lines typed, so drafts, rewrites and deleted work can’t inflate it. Lines measure volume, not value; what bounds the claim is what each era actually shipped, listed in the eras table.</td></tr>
+    <tr><td><strong>Pace &amp; ×4.4</strong></td><td>Measured</td><td>Solo = 50,759 lines ÷ 23 months · with Claude = +117,914 ÷ 12.2 months, from the snapshots above, my own commits only. The baseline is my own history, not an industry benchmark.</td></tr>
+    <tr><td><strong>Team ratio</strong></td><td>Self-reported</td><td>Half the 2022 team: the departures never needed backfilling, while the remaining developers moved to Flutter.</td></tr>
+    <tr><td><strong>Feature-cost ÷3–4</strong></td><td>Self-reported</td><td>The second implementation itself, the team-observed iOS factor (2–3× the Android build), everything that doubled around a feature, scoping, sync meetings and QA rounds, and the technical debt the old codebases carried. The range comes from the iOS factor, which varied by feature.</td></tr>
+    <tr><td><strong>Time</strong></td><td>Measured</td><td>App code only, divided by my own pre-AI pace. Tests are never converted into time, because counting them would more than double the claim.</td></tr>  </table>
+  </div>
+</section>
+
+<footer class="foot">
+  Benjamin Ledet · freelance mobile architect, Bordeaux, France · <a href="https://www.linkedin.com/in/benjamin-ledet">LinkedIn</a> · <a href="https://benjaminledet.github.io/offer.html">Services &amp; pricing</a> · benjamin.ledet.dev@pm.me<br>
+  Measured July 2026 from the repository API, release tags, monthly codebase snapshots and Sentry.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- Release-gap grouped bars, 2021–2025 ---------- */
+  (function(){
+    var data=[
+      {year:'2021', android:61, ios:19},
+      {year:'2022', android:70, ios:23},
+      {year:'2023', android:100, ios:57},
+      {year:'2024', android:71, ios:66},
+      {year:'2025', android:35, ios:90}
+    ];
+    var H=300, L=46, R=14, T=26, B=36, ymax=105;
+    var host=document.getElementById('chartGap');
+    var fig=document.getElementById('figGap'), tt=document.getElementById('ttGap');
+    function render(){
+      var W=Math.max(360,Math.round(host.clientWidth)||760);
+      var pw=W-L-R, ph=H-T-B;
+      function Y(v){ return T + (1 - v/ymax)*ph; }
+      var gw=pw/data.length, gap=8, bw=Math.min(38,Math.floor((gw-gap-8)/2));
+      function bar(x,v,cls){
+        var y=Y(v), h=(H-B)-y;
+        if(h<5) h=5;
+        return '<path class="'+cls+'" d="M'+x+','+(y+h)+' L'+x+','+(y+4)+' Q'+x+','+y+' '+(x+4)+','+y+
+               ' L'+(x+bw-4)+','+y+' Q'+(x+bw)+','+y+' '+(x+bw)+','+(y+4)+' L'+(x+bw)+','+(y+h)+' Z"/>';
+      }
+      var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Versions released per year, Android versus iOS, 2021 to 2025: the iOS deficit until 2023, then convergence as the migration progresses.">';
+      [0,25,50,75,100].forEach(function(v){
+        svg+='<line class="gl" x1="'+L+'" y1="'+Y(v)+'" x2="'+(W-R)+'" y2="'+Y(v)+'"/>';
+        svg+='<text class="ylab" x="'+(L-8)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'</text>';
+      });
+      data.forEach(function(d,i){
+        var cx=L+gw*i+gw/2;
+        var xa=cx-bw-gap/2, xi=cx+gap/2;
+        svg+=bar(xa,d.android,'bar-a');
+        svg+=bar(xi,d.ios,'bar-b');
+        svg+='<text class="barlab" x="'+(xa+bw/2)+'" y="'+(Y(d.android)-7)+'" text-anchor="middle">'+d.android+'</text>';
+        svg+='<text class="barlab" x="'+(xi+bw/2)+'" y="'+(Y(d.ios)-7)+'" text-anchor="middle">'+d.ios+'</text>';
+        svg+='<text class="xlab" x="'+cx+'" y="'+(H-B+18)+'" text-anchor="middle">'+d.year+'</text>';
+        svg+='<rect data-i="'+i+'" data-p="android" x="'+xa+'" y="'+T+'" width="'+bw+'" height="'+ph+'" fill="transparent"/>';
+        svg+='<rect data-i="'+i+'" data-p="ios" x="'+xi+'" y="'+T+'" width="'+bw+'" height="'+ph+'" fill="transparent"/>';
+      });
+      svg+='<line class="ax" x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-R)+'" y2="'+(H-B)+'"/>';
+      svg+='</svg>';
+      host.innerHTML=svg;
+      host.querySelectorAll('rect[data-i]').forEach(function(r){
+        function show(ev){
+          var d=data[+r.getAttribute('data-i')], p=r.getAttribute('data-p');
+          var v=p==='android'?d.android:d.ios;
+          var o=p==='android'?d.ios:d.android;
+          tt.innerHTML='<b>'+d.year+' · '+(p==='android'?'Android':'iOS')+'</b>: '+v+' versions'+
+            '<div class="d">'+(p==='android'?'iOS the same year: '+o:'Android the same year: '+o)+'</div>';
+          tt.style.display='block';
+          var fr=fig.getBoundingClientRect();
+          var x=ev.clientX-fr.left+14, xmax=fr.width-tt.offsetWidth-10;
+          tt.style.left=Math.max(0,Math.min(x,xmax))+'px';
+          tt.style.top=(ev.clientY-fr.top+16)+'px';
+        }
+        r.addEventListener('pointermove',show);
+        r.addEventListener('pointerdown',show);
+        r.addEventListener('pointerleave',function(){ tt.style.display='none'; });
+      });
+    }
+    render();
+    var rt; addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(render,150); });
+    document.addEventListener('pointerdown',function(ev){ if(!fig.contains(ev.target)) tt.style.display='none'; });
+  })();
+
+  /* ---------- Two-eras line chart ---------- */
+  (function(){
+    var S=[["2025-07-01",50759,1028],["2025-08-01",50795,1028],["2025-09-01",53284,4785],
+    ["2025-10-01",60486,8882],["2025-11-01",63577,8864],["2025-12-01",69375,10300],
+    ["2026-01-01",86439,70313],["2026-02-01",100267,92631],["2026-03-01",117879,100802],
+    ["2026-04-01",137733,109977],["2026-05-01",146327,115283],["2026-06-01",148946,116193],
+    ["2026-06-12",149067,116292],["2026-07-07",168673,135847]];
+    var P=[["2023-08-14",0],["2023-09-01",2852],["2023-10-01",5049],["2023-11-01",10159],
+    ["2023-12-01",14922],["2024-01-01",14840],["2024-02-01",19453],["2024-03-01",21013],
+    ["2024-04-01",23749],["2024-05-01",26824],["2024-06-01",26956],["2024-07-01",27803],
+    ["2024-08-01",32433],["2024-09-01",32687],["2024-10-01",32656],["2024-11-01",33365],
+    ["2024-12-01",33365],["2025-01-01",33268],["2025-02-01",50476],["2025-03-01",50595],
+    ["2025-04-01",50677],["2025-05-01",50703],["2025-06-01",50707]];
+    var H=400,T=22,B=38,YMAX=175000,TMAX=35.2;
+    function mi(d){var p=d.split("-");return (p[0]-2023)*12+(p[1]-8)+(p[2]-1)/30.44;}
+    function fmt(n){return n.toLocaleString("en-US");}
+    var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    function label(d){var p=d.split("-");return MONTHS[p[1]-1]+" "+(p[2]!=="01"?(+p[2])+", ":"")+p[0];}
+    var ALL=P.map(function(p){return [p[0],p[1],null];}).concat(S);
+    var host=document.getElementById("chart"), fig=document.getElementById("fig"), tt=document.getElementById("tt");
+    var hide=function(){};
+    function render(){
+      var W=Math.max(360,Math.round(host.clientWidth)||880);
+      var small=W<600;
+      var L=54, R=small?14:118;
+      function x(t){return L+t/TMAX*(W-L-R);}
+      function y(v){return T+(1-v/YMAX)*(H-T-B);}
+      var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Dart source lines, Aug 2023 to Jul 2026, app and test series">';
+      s+='<rect class="era" x="'+x(23)+'" y="'+T+'" width="'+(x(TMAX)-x(23))+'" height="'+(H-T-B)+'"/>';
+      [0,50000,100000,150000].forEach(function(v){
+        s+='<line class="gl" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'"/>';
+        s+='<text class="ylab" x="'+(L-8)+'" y="'+(y(v)+4)+'" text-anchor="end">'+(v?v/1000+"K":"0")+'</text>';
+      });
+      s+='<line class="ax" x1="'+L+'" x2="'+(W-R)+'" y1="'+y(0)+'" y2="'+y(0)+'"/>';
+      [["Aug 2023",0],["Aug 2024",12],["Jul 2025",23],["Jul 2026",35.2]].forEach(function(tk){
+        var anc=small?(tk[1]===0?'start':(tk[1]===TMAX?'end':'middle')):'middle';
+        s+='<text class="xlab" x="'+x(tk[1])+'" y="'+(H-14)+'" text-anchor="'+anc+'">'+tk[0]+'</text>';
+      });
+      s+='<line class="div" x1="'+x(23)+'" x2="'+x(23)+'" y1="'+T+'" y2="'+y(0)+'"/>';
+      s+='<text class="divlab" x="'+(x(23)+7)+'" y="'+(T+12)+'">Claude arrives</text>';
+      s+='<line class="test-line pre" x1="'+x(0)+'" y1="'+y(0)+'" x2="'+x(23)+'" y2="'+y(1028)+'"/>';
+      var pp=P.map(function(p,i){return (i?"L":"M")+x(mi(p[0]))+" "+y(p[1]);}).join(" ")+" L"+x(mi(S[0][0]))+" "+y(S[0][1]);
+      s+='<path class="app-line" d="'+pp+'"/>';
+      P.forEach(function(p){ s+='<circle class="pt" style="stroke:var(--blue)" cx="'+x(mi(p[0]))+'" cy="'+y(p[1])+'" r="2.6"/>'; });
+      function path(idx){return S.map(function(p,i){return (i?"L":"M")+x(mi(p[0]))+" "+y(p[idx]);}).join(" ");}
+      s+='<path class="app-line" d="'+path(1)+'"/><path class="test-line" d="'+path(2)+'"/>';
+      S.forEach(function(p){
+        s+='<circle class="pt" style="stroke:var(--blue)" cx="'+x(mi(p[0]))+'" cy="'+y(p[1])+'" r="3.2"/>';
+        s+='<circle class="pt" style="stroke:var(--aqua)" cx="'+x(mi(p[0]))+'" cy="'+y(p[2])+'" r="3.2"/>';
+      });
+      if(!small){
+        var last=S[S.length-1];
+        s+='<text class="endlab" style="fill:var(--blue)" x="'+(x(TMAX)+8)+'" y="'+(y(last[1])+4)+'">App '+fmt(last[1])+'</text>';
+        s+='<text class="endlab" style="fill:var(--aqua)" x="'+(x(TMAX)+8)+'" y="'+(y(last[2])+4)+'">Tests '+fmt(last[2])+'</text>';
+      }
+      s+='<line class="xh" id="xh" y1="'+T+'" y2="'+y(0)+'"/>';
+      s+='<rect id="hov" x="'+L+'" y="'+T+'" width="'+(W-L-R)+'" height="'+(H-T-B)+'" fill="transparent"/></svg>';
+      host.innerHTML=s;
+
+      var svg=fig.querySelector("svg"),hov=document.getElementById("hov"),xh=document.getElementById("xh");
+      function move(ev){
+        var r=svg.getBoundingClientRect(),sx=W/r.width;
+        var mx=(ev.clientX-r.left)*sx,best=0,bd=1e9;
+        ALL.forEach(function(p,i){var d=Math.abs(x(mi(p[0]))-mx);if(d<bd){bd=d;best=i;}});
+        if(bd>60){leave();return;}
+        var p=ALL[best],px=x(mi(p[0]));
+        xh.setAttribute("x1",px);xh.setAttribute("x2",px);xh.style.display="block";
+        tt.innerHTML='<div class="d">'+label(p[0])+'</div>App <b>'+fmt(p[1])+'</b>'+(p[2]==null?'':'<br>Tests <b>'+fmt(p[2])+'</b>');
+        tt.style.display="block";
+        var fr=fig.getBoundingClientRect(),lx=Math.max(0,(r.left-fr.left)+(px/sx)+(px>W-260?-170:16));
+        tt.style.left=lx+"px";tt.style.top=(ev.clientY-fr.top-30)+"px";
+      }
+      function leave(){tt.style.display="none";xh.style.display="none";}
+      hov.addEventListener("pointermove",move);
+      hov.addEventListener("pointerdown",move);
+      hov.addEventListener("pointerleave",leave);
+      hide=leave;
+    }
+    render();
+    var rt; addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(render,150); });
+    document.addEventListener('pointerdown',function(ev){ if(!fig.contains(ev.target)) hide(); });
+
+    var dt=document.getElementById("dtable"),rows='<thead><tr><th scope="col">Snapshot</th><th scope="col">App lines</th><th scope="col">Test lines</th></tr></thead>';
+    S.forEach(function(p){rows+='<tr><td>'+label(p[0])+'</td><td class="v">'+fmt(p[1])+'</td><td class="v">'+fmt(p[2])+'</td></tr>';});
+    dt.innerHTML=rows;
+  })();
+
+  /* ---------- Print: open the data tables while printing ---------- */
+  var openedForPrint=[];
+  addEventListener('beforeprint',function(){
+    openedForPrint=[];
+    document.querySelectorAll('details:not([open])').forEach(function(d){ d.open=true; openedForPrint.push(d); });
+  });
+  addEventListener('afterprint',function(){
+    openedForPrint.forEach(function(d){ d.open=false; });
+    openedForPrint=[];
+  });
+})();
+</script>
+
 </body>
 </html>

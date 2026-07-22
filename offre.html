@@ -1,18 +1,199 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Benjamin Ledet</title>
+<meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+<title>Benjamin Ledet · Offre &amp; tarifs</title>
+<meta name="description" content="Architecte mobile &amp; delivery IA. Audits, fondations, architecte dans votre équipe ou à la demande&nbsp;: les formats et leurs tarifs.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Benjamin Ledet · Offre &amp; tarifs">
+<meta property="og:description" content="Audits, fondations, architecte dans votre équipe ou à la demande&nbsp;: les formats et leurs tarifs. J’aide les PME et scale-ups tech à réduire le coût de leur delivery mobile.">
+<meta property="og:url" content="https://benjaminledet.github.io/offre.html">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" hreflang="fr" href="https://benjaminledet.github.io/offre.html">
+<link rel="alternate" hreflang="en" href="https://benjaminledet.github.io/offer.html">
+<link rel="alternate" hreflang="x-default" href="https://benjaminledet.github.io/offer.html">
 <style>
-  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-         background: #f9f9f7; color: #0b0b0b; }
-  @media (prefers-color-scheme: dark) { body { background: #121210; color: #eceae4; } }
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#6d6b64;
+  --grid:#e1e0d9; --ring:rgba(11,11,11,.10);
+  --blue:#1f6cc9; --wash:rgba(31,108,201,.055);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --ring:rgba(255,255,255,.10);
+    --blue:#3987e5; --wash:rgba(57,135,229,.09);
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --ring:rgba(255,255,255,.10);
+  --blue:#3987e5; --wash:rgba(57,135,229,.09);
+}
+:root[data-theme="light"]{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e; --muted:#6d6b64;
+  --grid:#e1e0d9; --ring:rgba(11,11,11,.10);
+  --blue:#1f6cc9; --wash:rgba(31,108,201,.055);
+}
+html{background:var(--page)}
+body{
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink); background:var(--page); margin:0; padding:0 20px;
+}
+.wrap{max-width:800px;margin:0 auto;padding:56px 0 72px}
+.lang{font-size:13px;margin:0 0 20px;text-align:right;color:var(--muted)}
+.lang a{color:var(--blue)}
+.eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 10px}
+.stitle{font-size:22px;line-height:1.3;letter-spacing:-.01em;font-weight:750;margin:0 0 12px}
+h1{font-size:clamp(34px,6vw,52px);line-height:1.06;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;font-weight:800}
+.lede{color:var(--ink-2);font-size:17.5px;max-width:56ch;margin:0}
+.lede+.lede{margin-top:13px}
+.contact-top{font-size:14.5px;color:var(--ink-2);margin:16px 0 0}
+.contact-top a{color:var(--blue)}
+section{margin-top:44px}
+.num{font-variant-numeric:tabular-nums}
+
+.offer{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:20px 22px 18px;margin-top:14px}
+.offer .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 18px;flex-wrap:wrap}
+.offer h3{font-size:19px;line-height:1.25;letter-spacing:-.01em;margin:0;font-weight:750;text-wrap:balance}
+.pr{text-align:right;margin-left:auto}
+.price{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.per{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.offer p{margin:12px 0 0;font-size:15.5px;line-height:1.6;color:var(--ink-2);max-width:66ch}
+.when{margin:11px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink);font-weight:600;max-width:64ch}
+.when+p{margin-top:8px}
+@media(max-width:560px){
+  .pr{text-align:left;margin-left:0;width:100%}
+}
+
+.note{font-size:14.5px;color:var(--ink-2);margin-top:14px;max-width:64ch}
+.note a{color:var(--blue)}
+.txt{font-size:15.5px;line-height:1.6;color:var(--ink-2);max-width:64ch;margin:12px 0 0}
+.offer+.note{margin-top:22px}
+
+.quote{padding:24px 26px;background:var(--surface);border:1px solid var(--ring);border-left:3px solid var(--blue);border-radius:12px;max-width:640px}
+.quote p{margin:0;font-size:17.5px;line-height:1.6;color:var(--ink);text-wrap:pretty}
+
+.cta{background:var(--wash);border:1px solid var(--ring);border-radius:12px;padding:24px 26px}
+.cta .big{font-size:clamp(20px,3.6vw,26px);font-weight:750;letter-spacing:-.01em;margin:0}
+.cta a{color:var(--blue);text-decoration-thickness:1.5px;overflow-wrap:anywhere}
+.dispo{font-size:14.5px;color:var(--ink-2);margin-top:10px}
+
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--grid);font-size:12.5px;color:var(--muted);line-height:1.6}
+.foot a{color:var(--blue)}
+
+a{text-underline-offset:2px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+@media print{
+  :root, :root[data-theme="dark"]{
+    --page:#fff; --surface:#fff; --ink:#000; --ink-2:#333;
+    --muted:#555; --grid:#ddd; --ring:#ccc; --blue:#1f6cc9;
+  }
+  body{padding:0}
+  .offer,.quote{break-inside:avoid}
+}
 </style>
 </head>
 <body>
-<h1>Hello world</h1>
-</body>
-</html>
+
+<div class="wrap">
+
+<p class="lang" lang="en"><a href="https://benjaminledet.github.io/offer.html" hreflang="en">English version</a></p>
+
+<header>
+  <p class="eyebrow">Benjamin Ledet · Bordeaux · en remote, France et UE</p>
+  <h1>Architecte mobile &amp; delivery&nbsp;IA</h1>
+  <p class="lede">J’aide les PME et scale-ups tech à réduire le coût de leur delivery mobile en migrant vers une seule stack Flutter, avec l’IA taillée pour cette architecture. Puis je passe la main à leur équipe, jusqu’au jour où elle n’a plus besoin de moi.</p>
+  <p class="lede">On commence presque toujours par un audit, parce que je ne peux pas savoir ce qui vaut le coup chez vous avant d’avoir regardé. Ensuite chaque palier dit dans quelle situation il sert, et rien n’oblige à les enchaîner.</p>
+  <p class="contact-top">Écrivez-moi&nbsp;: <a href="mailto:benjamin.ledet.dev@pm.me">benjamin.ledet.dev@pm.me</a></p>
+</header>
+
+<main>
+
+<section aria-labelledby="titre-offres">
+  <h2 class="stitle" id="titre-offres">Offre &amp; tarifs</h2>
+
+  <article class="offer">
+    <div class="head">
+      <h3>Audit flash</h3>
+      <div class="pr"><div class="price num">2&nbsp;700&nbsp;€ HT</div><div class="per">forfait · 3&nbsp;jours d’intervention</div></div>
+    </div>
+    <p class="when">Quand la question de migrer se pose et que vous voulez un avis argumenté avant d’engager quoi que ce soit.</p>
+    <p>L’état des lieux de votre stack mobile et un verdict sur la migration vers Flutter, y compris quand la conclusion est de ne pas migrer. Le verdict s’appuie sur six critères structurels, notés un par un : la part de l’app qui devra rester native, ce qui se mutualise réellement, la structure de l’équipe, la dette des deux bases, la pression de la roadmap et l’appétence de l’équipe.</p>
+  </article>
+
+  <article class="offer">
+    <div class="head">
+      <h3>Audit complet</h3>
+      <div class="pr"><div class="price num">6&nbsp;400&nbsp;€ HT</div><div class="per">forfait · 8&nbsp;jours d’intervention</div></div>
+    </div>
+    <p class="when">Quand la décision doit se défendre avec des chiffres, devant votre direction ou vos investisseurs.</p>
+    <p>Le travail construit en double, mesuré dans votre historique de développement, et la part qu’une migration ferait disparaître. Tout l’audit flash est compris, plus un diagnostic de votre delivery et de la place qu’y prend l’IA. J’y ajoute l’inventaire des composants de design system à reprendre, et l’arbitrage de la version qui fera référence pour les réécrire, entre vos maquettes et vos deux apps natives. Le plan de migration se cale sur votre roadmap, pour que le bénéfice commence dès les premiers écrans migrés. Ce qui est déjà prévu se construit en Flutter, une fois au lieu de deux.</p>
+  </article>
+
+  <article class="offer">
+    <div class="head">
+      <h3>Fondations</h3>
+      <div class="pr"><div class="price num">6&nbsp;000 à 13&nbsp;000&nbsp;€ HT</div><div class="per">forfait · périmètre et prix fixés au devis à l’issue de l’audit</div></div>
+    </div>
+    <p class="when">Quand la décision est prise et qu’il faut poser l’architecture et la config autour de l’IA, sur lesquelles votre équipe construira la suite.</p>
+    <p>L’architecture Flutter de référence, la configuration IA de votre delivery (les règles que suit l’assistant sur votre codebase, les contrôles qui tiennent la qualité, les releases automatisées), les composants de votre design system réécrits dans le périmètre arrêté à l’audit. L’architecture se construit avec vos développeurs, qui la reprennent derrière moi.</p>
+  </article>
+
+  <article class="offer">
+    <div class="head">
+      <h3>Architecte dans votre équipe</h3>
+      <div class="pr"><div class="price num">750&nbsp;€ HT par jour</div><div class="per">2 à 3&nbsp;jours par semaine</div></div>
+    </div>
+    <p class="when">Quand il vous faut des mains sur le chantier, deux à trois jours par semaine.</p>
+    <p>Je pilote et je code la migration ou les fonctionnalités qui engagent la nouvelle architecture Flutter, au sein de votre équipe. Engagement mois par mois, avec des objectifs de fin de mission posés au devis, un module clé en production par exemple.</p>
+  </article>
+
+  <article class="offer">
+    <div class="head">
+      <h3>Architecte à la demande</h3>
+      <div class="pr"><div class="price num">2&nbsp;000 à 4&nbsp;000&nbsp;€ HT par mois</div><div class="per">2&nbsp;jours par mois = 2&nbsp;000&nbsp;€ · 3&nbsp;jours = 3&nbsp;000&nbsp;€ · 4&nbsp;jours = 4&nbsp;000&nbsp;€</div></div>
+    </div>
+    <p class="when">Quand votre équipe avance seule sur la migration et qu’il vous faut un avis plutôt que des mains, quelques jours par mois.</p>
+    <p>Je ne touche pas au code. Je fais des reviews écrites du code de la migration, je refais le point sur le plan quand quelque chose a bougé par rapport à ce qui était prévu, et je peux aider selon votre besoin, sur l’organisation ou le design UI/UX par exemple. Le nombre de jours est fait pour diminuer au fil des mois, parce que l’objectif est que vous n’ayez plus besoin de moi.</p>
+  </article>
+
+  <p class="note">Les jours indiqués sont une charge de travail, pas un délai. Le délai de restitution est fixé au devis, et il court à partir du moment où l’acompte est reçu et où vous m’ouvrez l’accès à votre code et à vos outils.</p>
+  <p class="note">La transmission à votre équipe est comprise dans chaque prestation, il n’y a pas de ligne «&nbsp;formation&nbsp;» à part.</p>
+</section>
+
+<section aria-labelledby="titre-design">
+  <h2 class="stitle" id="titre-design">Le design</h2>
+  <p class="txt">La migration est le bon moment pour reprendre le design system, voire pour changer d’identité visuelle. Les composants sont réécrits de toute façon, donc autant décider maintenant de ce qu’ils deviennent. Décider plus tard, c’est retoucher tous les écrans après coup. Cette reprise est du vrai travail, surtout côté design, et elle se chiffre au devis.</p>
+  <p class="txt">C’est ce qu’on a fait chez Yescapa, où la migration a servi à refondre l’app entière, co-menée avec le designer. Six ans à travailler à deux, ça m’a appris à parler design autant qu’architecture.</p>
+</section>
+
+<section aria-labelledby="titre-resultats">
+  <h2 class="stitle" id="titre-resultats">Les résultats</h2>
+  <div class="quote">
+    <p>Je ne vous promets pas mes chiffres, ils dépendent de mon contexte. Mais j’ai suffisamment appris en les produisant pour savoir où votre delivery peut gagner, et l’audit sert à ça, mesurer ce gain chez vous avant d’engager la suite.</p>
+  </div>
+  <p class="note">Ce que je conseille, je l’ai fait, en production. Les chiffres et la méthode sont sur <a href="https://benjaminledet.github.io/" hreflang="en">cette page</a> (en anglais).</p>
+</section>
+
+<section class="cta" aria-label="Contact">
+  <p class="big">Écrivez-moi&nbsp;: <a href="mailto:benjamin.ledet.dev@pm.me">benjamin.ledet.dev@pm.me</a></p>
+  <p class="dispo">Disponibilités&nbsp;: audits dès août, le reste à partir du 14&nbsp;septembre.</p>
+</section>
+
+</main>
+
+<footer class="foot">
+  Benjamin Ledet · architecte mobile &amp; delivery IA · Bordeaux, France · <a href="https://www.linkedin.com/in/benjamin-ledet">LinkedIn</a> · <a href="mailto:benjamin.ledet.dev@pm.me">benjamin.ledet.dev@pm.me</a>
+</footer>
+
+</div>
+
+</body></html>
